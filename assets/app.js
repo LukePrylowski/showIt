@@ -19,11 +19,34 @@ function renderSetup() {
   $('team-count').textContent = `${teams.length} / 20`; $('new-game').disabled = teams.length < 2 || !selected.size;
   $('select-all').textContent = selected.size === state.catalog.length ? 'Odznacz wszystkie' : 'Zaznacz wszystkie';
 }
+function audioUnavailable() {
+  $('notice').textContent = 'Dźwięk niedostępny. Sprawdź głośność i tryb cichy telefonu. Obserwuj licznik czasu.';
+  $('notice').hidden = false;
+}
 async function unlockAudio() {
-  try { audioContext ??= new (window.AudioContext || window.webkitAudioContext)(); await audioContext.resume(); } catch { $('notice').textContent = 'Dźwięk niedostępny. Obserwuj licznik czasu.'; $('notice').hidden = false; }
+  try {
+    // Safari can mute Web Audio with the silent switch in its default session.
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
+    if (!audioContext || audioContext.state === 'closed') {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    const resumed = audioContext.resume();
+    // Start a source before awaiting: iOS requires playback in the tap handler.
+    const source = audioContext.createBufferSource();
+    source.buffer = audioContext.createBuffer(1, 1, audioContext.sampleRate);
+    source.connect(audioContext.destination);
+    source.onended = () => source.disconnect();
+    source.start(0);
+    await resumed;
+    if (audioContext.state !== 'running') throw new Error('Audio suspended');
+    return true;
+  } catch {
+    audioUnavailable();
+    return false;
+  }
 }
 function alarm() {
-  if (audioContext?.state !== 'running') return;
+  if (audioContext?.state !== 'running') { audioUnavailable(); return false; }
   // Three rising and falling sweeps imitate a fire-engine siren.
   const oscillator = audioContext.createOscillator(), gain = audioContext.createGain();
   const at = audioContext.currentTime, duration = 3.6;
@@ -41,6 +64,7 @@ function alarm() {
   oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
   oscillator.start(at); oscillator.stop(at + duration);
   navigator.vibrate?.([150, 80, 150]);
+  return true;
 }
 function render() {
   clearTimeout(alarmTimer);
@@ -60,7 +84,7 @@ function tick() {
 }
 async function expire() {
   if (state?.phase !== 'running' || finishing) return;
-  finishing = true; if (!sounded) { alarm(); sounded = true; } $('next').disabled = true;
+  finishing = true; if (!sounded) { sounded = alarm(); } $('next').disabled = true;
   try { const fresh = await api(); state = fresh; render(); }
   catch { $('word').textContent = ''; $('notice').textContent = 'Czas minął. Czekamy na połączenie z serwerem…'; $('notice').hidden = false; }
   finally { setTimeout(() => { finishing = false; }, 1000); }
@@ -69,12 +93,19 @@ $('team-form').onsubmit = e => { e.preventDefault(); const name = $('team-name')
 $('team-name').oninput = () => $('team-name').setCustomValidity(''); $('duration').oninput = save;
 $('select-all').onclick = () => { selected = selected.size === state.catalog.length ? new Set() : new Set(state.catalog.map(c => c.id)); save(); renderSetup(); };
 $('new-game').onclick = () => { if (!$('duration').reportValidity()) return; run(() => change('new', {teams, categories: [...selected], duration: Number($('duration').value)})); };
-$('start').onclick = () => { unlockAudio(); run(() => change('start')); };
-$('test-sound').onclick = async () => { await unlockAudio(); alarm(); };
+$('start').onclick = () => {
+  if (busy) return;
+  const audioReady = unlockAudio();
+  run(async () => { await change('start'); if (!await audioReady) audioUnavailable(); });
+};
+$('test-sound').onclick = async () => {
+  $('notice').hidden = true;
+  if (await unlockAudio()) alarm();
+};
 $('next').onclick = () => run(() => change('next', {revision: state.revision}));
 $('advance').onclick = () => run(() => change('advance'));
 document.querySelectorAll('.edit-room').forEach(b => b.onclick = () => run(() => change('setup')));
-document.addEventListener('visibilitychange', () => { if (!document.hidden && state?.phase === 'running') run(async () => { const wasRunning = state.phase === 'running'; state = await api(); if (wasRunning && state.phase === 'finished' && !sounded) { alarm(); sounded = true; } render(); }); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && state?.phase === 'running') run(async () => { const wasRunning = state.phase === 'running'; state = await api(); if (wasRunning && state.phase === 'finished' && !sounded) { sounded = alarm(); } render(); }); });
 setInterval(tick, 100);
 run(async () => {
   state = await api(); teams = state.teams.map(t => t.name); selected = new Set(state.categories); $('duration').value = state.duration;

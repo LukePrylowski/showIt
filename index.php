@@ -14,7 +14,7 @@ $_SESSION['csrf'] ??= bin2hex(random_bytes(24));
   <title>Show It! — Pokaż to!</title>
   <link rel="icon" type="image/png" href="yupiii_games_small.png">
   <link rel="stylesheet" href="assets/style.css">
-  <script src="assets/app.js" defer></script>
+  <script src="assets/app.js?v=20261001" defer></script>
   <script src="assets/support.js" defer></script>
 </head>
 <body>
@@ -26,7 +26,7 @@ $_SESSION['csrf'] ??= bin2hex(random_bytes(24));
 <button class="support-button" type="button" data-support>Dobra zabawa? Postaw autorowi kawę ☕</button>
 <div class="panel"><div class="section-heading"><h2><span>01</span> Wybierz klimat</h2><button class="text-button" id="select-all">Zaznacz wszystkie</button></div><p class="muted">Z jakich kategorii losujemy hasła?</p><div id="categories" class="categories"></div></div>
 <div class="panel"><div class="section-heading"><h2><span>02</span> Zbierz drużyny</h2><span class="count" id="team-count">0 / 20</span></div><p class="muted">Minimum 2 drużyny. W każdej turze pokazuje kolejna osoba z drużyny.</p><form id="team-form"><label class="sr-only" for="team-name">Nazwa drużyny</label><input id="team-name" maxlength="30" placeholder="Jak nazywa się drużyna?" autocomplete="off" required><button class="add-button" aria-label="Dodaj drużynę">＋</button></form><ul id="teams"></ul></div>
-<div class="panel"><h2><span>03</span> Czas na pokazywanie</h2><p class="muted">Od 15 do 300 sekund na turę.</p><label for="duration">Sekundy</label> <input id="duration" type="number" min="15" max="300" step="1" value="60" required><p class="muted">Sygnał końca tury włącza się po kliknięciu START. Zostaw stronę otwartą i ustaw głośność telefonu.</p><button class="secondary" id="test-sound" type="button">Sprawdź dźwięk <span>♪</span></button></div>
+<div class="panel"><div class="section-heading"><h2><span>03</span> Czas na pokazywanie</h2></div><p class="muted">Od 15 do 300 sekund na turę.</p><label for="duration">Sekundy</label> <input id="duration" type="number" min="15" max="300" step="1" value="60" required><p class="muted">Sygnał końca tury włącza się po kliknięciu START. Zostaw stronę otwartą i ustaw głośność telefonu.</p><button class="secondary" id="test-sound" type="button">Sprawdź dźwięk <span>♪</span></button></div>
 <button class="primary" id="new-game">Nowa gra <span>↗</span></button><p class="footnote">kalambury · drużyny · wyścig z czasem</p>
 </section>
 <section id="ready" class="play-screen centered" hidden><div class="big-symbol">🎭</div><span class="eyebrow" id="ready-round"></span><h1 id="ready-team"></h1><p>Wybierzcie osobę, która pokazuje, i podajcie jej telefon.<br>Reszta drużyny zgaduje — bez podglądania!</p><p id="ready-time"></p><button class="primary" id="start">START <span>▶</span></button><button class="secondary edit-room">Ustawienia <span>↩</span></button></section>
