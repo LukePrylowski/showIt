@@ -109,6 +109,7 @@
           <span class="icon" aria-hidden="true">🎭</span>
           <span class="name">Pokaż to!</span>
           <span class="game-tagline">Bez słów. Na czas.</span>
+          <span class="game-count" id="showit-games-played" hidden></span>
           <span class="arrow" aria-hidden="true">↗</span>
         </a>
         <details class="game-info">
@@ -140,18 +141,21 @@
   </dialog>
   <script>
 async function refreshGameCount() {
-  const counter = document.getElementById('games-played');
-  try {
-    const gameUrl = document.querySelector('a.game').href;
-    const response = await fetch(new URL('stats.php', gameUrl), { cache: 'no-store' });
-    if (!response.ok) throw new Error('Counter unavailable');
-    const data = await response.json();
-    if (!Number.isSafeInteger(data.gamesPlayed) || data.gamesPlayed < 0) throw new Error('Invalid counter');
-    counter.textContent = `Rozegrane gry: ${new Intl.NumberFormat('pl-PL').format(data.gamesPlayed)}`;
-    counter.hidden = false;
-  } catch {
-    counter.hidden = true;
-  }
+  await Promise.all(Array.from(document.querySelectorAll('a.game'), async game => {
+    const counter = game.querySelector('.game-count');
+    if (!counter) return;
+    try {
+      const gameUrl = game.href;
+      const response = await fetch(new URL('stats.php', gameUrl), { cache: 'no-store' });
+      if (!response.ok) throw new Error('Counter unavailable');
+      const data = await response.json();
+      if (!Number.isSafeInteger(data.gamesPlayed) || data.gamesPlayed < 0) throw new Error('Invalid counter');
+      counter.textContent = `Rozegrane gry: ${new Intl.NumberFormat('pl-PL').format(data.gamesPlayed)}`;
+      counter.hidden = false;
+    } catch {
+      counter.hidden = true;
+    }
+  }));
 }
 window.addEventListener('pageshow', refreshGameCount);
 document.querySelectorAll('[data-support]').forEach(button => {

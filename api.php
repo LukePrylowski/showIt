@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__.'/game_stats.php';
 session_name('showit');
 session_start(['cookie_httponly'=>true,'cookie_samesite'=>'Lax','cookie_secure'=>!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off']);
 header('Content-Type: application/json; charset=utf-8');
@@ -38,6 +39,13 @@ if($_SERVER['REQUEST_METHOD']==='POST') {
         $room=['code'=>$room['code'],'teams'=>array_map(fn($n)=>['name'=>$n,'score'=>0],array_values($teams)),'categories'=>array_values(array_unique($categories)),'duration'=>$duration,'phase'=>'ready','turn'=>0,'round'=>1,'roundPoints'=>0,'pool'=>array_values(array_unique($pool)),'deck'=>[]];
     } elseif($action==='start') {
         if($room['phase']!=='ready') fail('Ta tura już się rozpoczęła.');
+        if (empty($room['counted'])) {
+            try { gameCount(true); } catch (Throwable $error) {
+                error_log('Show It counter: '.$error->getMessage());
+                fail('Nie udało się zapisać gry. Spróbuj ponownie.', 503);
+            }
+            $room['counted'] = true;
+        }
         draw($room); $room['roundPoints']=0; $room['phase']='running'; $room['deadline']=microtime(true)+$room['duration']; $room['revision']=bin2hex(random_bytes(8));
     } elseif($action==='next') {
         if($room['phase']==='running') {

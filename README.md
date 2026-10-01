@@ -10,6 +10,10 @@ Pokój jest osobną sesją przeglądarki, tak jak w WeaselWords. Kod identyfikuj
 
 Dźwięk końca tury korzysta z Web Audio aktywowanego przyciskiem START lub „Sprawdź dźwięk”. Ustaw głośność i zostaw stronę na ekranie. Przeglądarki mobilne mogą wstrzymać dźwięk i JavaScript po zablokowaniu telefonu lub przejściu do innej aplikacji; po powrocie stan zostaje zsynchronizowany z serwerem. Sam timer i punktacja są sprawdzane na serwerze. Przed grą warto przetestować dźwięk na urządzeniu.
 
+## Licznik gier
+
+`stats.php` zwraca publiczną liczbę gier jako `gamesPlayed`. Licznik zwiększa się przy pierwszym START nowej gry, a kolejne tury i odświeżenia go nie zmieniają. Dane zapisują się w `data/games-played.json` z blokadą pliku; katalog `data` musi być zapisywalny przez PHP. Zachowaj ten plik przy aktualizacji aplikacji.
+
 ## Kategorie
 
 Każdy plik `data/categories/*.json` to osobna kategoria:
