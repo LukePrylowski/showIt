@@ -39,11 +39,9 @@
     .game-tile { min-width: 0; min-height: 0; height: 240px; padding: clamp(14px, 3vw, 28px); border: 1px solid #584568; border-radius: 20px; background: #2b223b; }
     .game { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: inherit; text-align: center; text-decoration: none; transition: transform .15s, border-color .15s; -webkit-tap-highlight-color: transparent; }
     .game-tagline { color: #b8afc9; font-size: 20px; line-height: 2; font-weight: bold;}
-    .game-info { min-width: 0; overflow-wrap: anywhere; }
-    .game-info summary { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; cursor: pointer; overflow-y: auto; scrollbar-width: thin; }
-    .game-info summary::-webkit-details-marker { display: none; }
-    .game-info summary:hover { border-color: #d7ff72; }
-    .game-info summary:focus-visible { outline: 3px solid #d7ff72; outline-offset: 4px; }
+    .game-info { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0; overflow-wrap: anywhere; text-align: left; font: inherit; cursor: pointer; overflow-y: auto; scrollbar-width: thin; }
+    .game-info:hover { border-color: #d7ff72; }
+    .game-info:focus-visible { outline: 3px solid #d7ff72; outline-offset: 4px; }
     .info-title { color: #d7ff72; font-size: clamp(16px, 2.5vw, 23px); font-weight: 700; }
     .info-description { color: #b8afc9; font-size: clamp(12px, 1.8vw, 15px); line-height: 1.6; }
     .game:hover { transform: translateY(-3px); border-color: #d7ff72; }
@@ -53,25 +51,25 @@
     .game-count { display: block; margin-top: 10px; color: #d7ff72; font-size: 12px; font-weight: 600; }
     .game-count[hidden] { display: none; }
     .arrow { position: absolute; top: 12px; right: 16px; color: #d7ff72; font-size: 24px; }
-    details p, details li { font-size: 14px; line-height: 1.7; color: #b8afc9; }
-    details ol { padding-left: 22px; }
+    .modal-dialog p, .modal-dialog li { font-size: 14px; line-height: 1.7; color: #b8afc9; }
+    .modal-dialog ol { padding-left: 22px; }
     footer { margin-top: 44px; color: #998aaa; font-size: 11px; letter-spacing: 1px; }
     @media (max-width: 480px) { main { padding-left: 14px; padding-right: 14px; } .game-row { gap: 10px; } .game-tile { border-radius: 16px; } .game { gap: 8px; } .game-count { font-size: 10px; margin-top: 4px; } }
     @media (prefers-reduced-motion: reduce) { .game { transition: none; } }
 .support-button{display:block;width:100%;background:#2c253f;border:1px solid #514362;border-radius:14px;padding:14px;color:#d7c9e9;font-size:13px;margin:0 0 16px}
-#support-dialog{width:calc(100% - 32px);max-width:420px;max-height:calc(100svh - 32px);overflow:auto;border:1px solid #71598f;border-radius:22px;background:#231f35;color:#faf8ff;padding:24px;box-shadow:0 20px 70px #0008}
-#support-dialog::backdrop{background:#100b20bb}
-#support-dialog p{font-size:14px;color:#c6bcd6}
+.modal-dialog{width:calc(100% - 32px);max-width:420px;max-height:calc(100svh - 32px);overflow:auto;border:1px solid #71598f;border-radius:22px;background:#231f35;color:#faf8ff;padding:24px;box-shadow:0 20px 70px #0008}
+.modal-dialog::backdrop{background:#100b20bb}
+.modal-dialog p{font-size:14px;color:#c6bcd6}
 #support-dialog .blik-number{font-size:30px;font-weight:700;letter-spacing:2px;color:#d7ff72;text-align:center;user-select:all}
 .dialog-close{justify-content:flex-end;margin:-12px -12px 0 0}
 .dialog-close button{background:transparent;border:0;font-size:28px;min-width:44px}
 #copy-status{min-height:22px;margin-bottom:0}
 
     .support-button { cursor: pointer; min-height: 44px; margin-top: 18px; font: inherit; font-size: 13px; }
-    #support-dialog button { cursor: pointer; color: inherit; }
+    .modal-dialog button { cursor: pointer; color: inherit; }
     #support-dialog .primary { width: 100%; min-height: 48px; border: 0; border-radius: 12px; padding: 12px; background: #d7ff72; color: #171426; font-weight: 700; }
     .dialog-close { display: flex; }
-    #support-dialog button:focus-visible, .support-button:focus-visible { outline: 3px solid #d7ff72; outline-offset: 4px; }
+    .modal-dialog button:focus-visible, .support-button:focus-visible { outline: 3px solid #d7ff72; outline-offset: 4px; }
   </style>
 </head>
 <body>
@@ -90,19 +88,10 @@
           <span class="game-count" id="games-played" hidden></span>
           <span class="arrow" aria-hidden="true">↗</span>
         </a>
-        <details class="game-info">
-          <summary class="game-tile">
-            <span class="info-title">Jak grać w „Kto kręci?” 👀</span>
-            <span class="info-description">Mnóstwo podejrzeń i gra w blef dla 3–20 osób. Wystarczy jeden telefon i ekipa, która potrafi zachować pokerową twarz!</span>
-          </summary>
-            <ol>
-              <li>Wybierzcie kategorie, dodajcie graczy i kliknijcie „Nowa gra”.</li>
-              <li>Podawajcie sobie telefon. Każdy odkrywa swoją kartę, zapamiętuje ją i zakrywa przed przekazaniem telefonu dalej. Wszyscy poznają to samo hasło — poza oszustem, który dostaje tylko podpowiedź.</li>
-              <li>Kliknijcie START i kolejno podawajcie skojarzenia, nie zdradzając hasła. Oszust musi improwizować!</li>
-              <li>Gdy będziecie gotowi, zatrzymajcie czas i wspólnie wskażcie podejrzanego. Wygrywacie, jeśli wykryjecie oszusta. Jeśli Was zmyli — wygrywa on.</li>
-            </ol>
-            <p>Jeszcze jedna runda? „Nowa gra” losuje nowe hasło, a „Powrót do pokoju” pozwala zmienić kategorie, zachowując graczy.</p>
-        </details>
+        <button class="game-info game-tile" type="button" data-game-dialog="weaselwords-dialog" aria-haspopup="dialog" aria-controls="weaselwords-dialog">
+          <span class="info-title">Jak grać w „Kto kręci?” 👀</span>
+          <span class="info-description">Mnóstwo podejrzeń i gra w blef dla 3–20 osób. Wystarczy jeden telefon i ekipa, która potrafi zachować pokerową twarz!</span>
+        </button>
       </div>
       <div class="game-row">
         <a class="game game-tile" href="showIt/index.php">
@@ -112,11 +101,32 @@
           <span class="game-count" id="showit-games-played" hidden></span>
           <span class="arrow" aria-hidden="true">↗</span>
         </a>
-        <details class="game-info">
-          <summary class="game-tile">
-            <span class="info-title">Jak grać w „Pokaż to!” 🎭</span>
-            <span class="info-description">Kalambury dla 2–20 drużyn na jednym telefonie. Pokazujcie hasła bez słów, zgadujcie i zbierajcie punkty, zanim skończy się czas!</span>
-          </summary>
+        <button class="game-info game-tile" type="button" data-game-dialog="showit-dialog" aria-haspopup="dialog" aria-controls="showit-dialog">
+          <span class="info-title">Jak grać w „Pokaż to!” 🎭</span>
+          <span class="info-description">Kalambury dla 2–20 drużyn na jednym telefonie. Pokazujcie hasła bez słów, zgadujcie i zbierajcie punkty, zanim skończy się czas!</span>
+        </button>
+      </div>
+    </section>
+    <button class="support-button" type="button" data-support>Dobra zabawa? Postaw autorowi kawę ☕</button>
+    <footer>MAŁA GRA. WIELKIE EMOCJE.</footer>
+  </main>
+  <dialog class="modal-dialog" id="weaselwords-dialog" aria-labelledby="weaselwords-title">
+    <form method="dialog" class="dialog-close"><button aria-label="Zamknij">×</button></form>
+    <h2 id="weaselwords-title">Jak grać w „Kto kręci?” 👀</h2>
+    <p>Mnóstwo podejrzeń i gra w blef dla 3–20 osób. Wystarczy jeden telefon i ekipa, która potrafi zachować pokerową twarz!</p>
+            <ol>
+              <li>Wybierzcie kategorie, dodajcie graczy i kliknijcie „Nowa gra”.</li>
+              <li>Podawajcie sobie telefon. Każdy odkrywa swoją kartę, zapamiętuje ją i zakrywa przed przekazaniem telefonu dalej. Wszyscy poznają to samo hasło — poza oszustem, który dostaje tylko podpowiedź.</li>
+              <li>Kliknijcie START i kolejno podawajcie skojarzenia, nie zdradzając hasła. Oszust musi improwizować!</li>
+              <li>Gdy będziecie gotowi, zatrzymajcie czas i wspólnie wskażcie podejrzanego. Wygrywacie, jeśli wykryjecie oszusta. Jeśli Was zmyli — wygrywa on.</li>
+            </ol>
+            <p>Jeszcze jedna runda? „Nowa gra” losuje nowe hasło, a „Powrót do pokoju” pozwala zmienić kategorie, zachowując graczy.</p>
+
+  </dialog>
+  <dialog class="modal-dialog" id="showit-dialog" aria-labelledby="showit-title">
+    <form method="dialog" class="dialog-close"><button aria-label="Zamknij">×</button></form>
+    <h2 id="showit-title">Jak grać w „Pokaż to!” 🎭</h2>
+    <p>Kalambury dla 2–20 drużyn na jednym telefonie. Pokazujcie hasła bez słów, zgadujcie i zbierajcie punkty, zanim skończy się czas!</p>
           <ol>
             <li>Wybierzcie kategorie, dodajcie drużyny i ustawcie czas tury od 15 do 300 sekund. Kliknijcie „Nowa gra”.</li>
             <li>Podajcie telefon osobie pokazującej. Tylko ona widzi hasła — reszta drużyny zgaduje.</li>
@@ -124,13 +134,9 @@
             <li>Po upływie czasu sprawdźcie wyniki i przekażcie telefon kolejnej drużynie. W następnej turze zmieńcie osobę pokazującą.</li>
           </ol>
           <p>Punkty sumują się przez kolejne tury. Zostawcie stronę otwartą i ustawcie głośność telefonu, aby usłyszeć sygnał końca czasu.</p>
-        </details>
-      </div>
-    </section>
-    <button class="support-button" type="button" data-support>Dobra zabawa? Postaw autorowi kawę ☕</button>
-    <footer>MAŁA GRA. WIELKIE EMOCJE.</footer>
-  </main>
-  <dialog id="support-dialog" aria-labelledby="support-title">
+
+  </dialog>
+  <dialog class="modal-dialog" id="support-dialog" aria-labelledby="support-title">
     <form method="dialog" class="dialog-close"><button aria-label="Zamknij">×</button></form>
     <h2 id="support-title">Postaw autorowi kawę ☕</h2>
     <p>Podoba Ci się gra? Możesz wesprzeć autora dowolną kwotą. Dzięki za każdą kawę! 💜</p>
@@ -158,6 +164,9 @@ async function refreshGameCount() {
   }));
 }
 window.addEventListener('pageshow', refreshGameCount);
+document.querySelectorAll('[data-game-dialog]').forEach(button => {
+  button.onclick = () => document.getElementById(button.dataset.gameDialog).showModal();
+});
 document.querySelectorAll('[data-support]').forEach(button => {
   button.onclick = () => { document.getElementById('copy-status').textContent = ''; document.getElementById('support-dialog').showModal(); };
 });
