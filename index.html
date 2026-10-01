@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#171426">
+  <title>Gry imprezowe — wybierz grę</title>
+  <meta name="description" content="Zbierz znajomych, wybierz grę i rozkręć imprezę z Yupiii! Games.">
+  <link rel="icon" type="image/png" href="yupiii_games_small.png">
+  <link rel="apple-touch-icon" href="yupiii_games_small.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:site_name" content="Yupiii! Games">
+  <meta property="og:url" content="https://yupiii.co/games/">
+  <meta property="og:title" content="Gry imprezowe — wybierz grę">
+  <meta property="og:description" content="Zbierz znajomych, wybierz grę i rozkręć imprezę z Yupiii! Games.">
+  <meta property="og:image" content="https://yupiii.co/games/yupii_games_big.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1184">
+  <meta property="og:image:height" content="744">
+  <meta property="og:image:alt" content="Logo Yupiii! Games">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gry imprezowe — wybierz grę">
+  <meta name="twitter:description" content="Zbierz znajomych, wybierz grę i rozkręć imprezę z Yupiii! Games.">
+  <meta name="twitter:image" content="https://yupiii.co/games/yupii_games_big.png">
+  <meta name="twitter:image:alt" content="Logo Yupiii! Games">
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #171426; color: #faf8ff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100svh; background: radial-gradient(ellipse at top right, #49305f, transparent 65%); }
+    main { max-width: 960px; margin: auto; padding: max(48px, env(safe-area-inset-top)) 22px max(32px, env(safe-area-inset-bottom)); }
+    .symbol { display: block; width: 80px; height: auto; }
+    .eyebrow { color: #c3b0e2; font-size: 11px; font-weight: 700; letter-spacing: 2px; }
+    h1 { font-size: clamp(38px, 9vw, 60px); line-height: 1.08; letter-spacing: -2px; margin: 20px 0; }
+    h1 span { color: #d7ff72; }
+    p { color: #b8afc9; line-height: 1.6; }
+    .games { display: grid; gap: 20px; margin-top: 36px; }
+    .game-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .game-tile { min-width: 0; min-height: 0; height: 240px; padding: clamp(14px, 3vw, 28px); border: 1px solid #584568; border-radius: 20px; background: #2b223b; }
+    .game { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: inherit; text-align: center; text-decoration: none; transition: transform .15s, border-color .15s; -webkit-tap-highlight-color: transparent; }
+    .game-tagline { color: #b8afc9; font-size: 20px; line-height: 2; font-weight: bold;}
+    .game-info { min-width: 0; overflow-wrap: anywhere; }
+    .game-info summary { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; cursor: pointer; overflow-y: auto; scrollbar-width: thin; }
+    .game-info summary::-webkit-details-marker { display: none; }
+    .game-info summary:hover { border-color: #d7ff72; }
+    .game-info summary:focus-visible { outline: 3px solid #d7ff72; outline-offset: 4px; }
+    .info-title { color: #d7ff72; font-size: clamp(16px, 2.5vw, 23px); font-weight: 700; }
+    .info-description { color: #b8afc9; font-size: clamp(12px, 1.8vw, 15px); line-height: 1.6; }
+    .game:hover { transform: translateY(-3px); border-color: #d7ff72; }
+    .game:focus-visible { outline: 3px solid #d7ff72; outline-offset: 5px; }
+    .icon { font-size: clamp(36px, 7vw, 64px); line-height: 1; }
+    .name { display: block; font-size: clamp(18px, 3.5vw, 32px); font-weight: 750; }
+    .game-count { display: block; margin-top: 10px; color: #d7ff72; font-size: 12px; font-weight: 600; }
+    .game-count[hidden] { display: none; }
+    .arrow { position: absolute; top: 12px; right: 16px; color: #d7ff72; font-size: 24px; }
+    details p, details li { font-size: 14px; line-height: 1.7; color: #b8afc9; }
+    details ol { padding-left: 22px; }
+    footer { margin-top: 44px; color: #998aaa; font-size: 11px; letter-spacing: 1px; }
+    @media (max-width: 480px) { main { padding-left: 14px; padding-right: 14px; } .game-row { gap: 10px; } .game-tile { border-radius: 16px; } .game { gap: 8px; } .game-count { font-size: 10px; margin-top: 4px; } }
+    @media (prefers-reduced-motion: reduce) { .game { transition: none; } }
+.support-button{display:block;width:100%;background:#2c253f;border:1px solid #514362;border-radius:14px;padding:14px;color:#d7c9e9;font-size:13px;margin:0 0 16px}
+#support-dialog{width:calc(100% - 32px);max-width:420px;max-height:calc(100svh - 32px);overflow:auto;border:1px solid #71598f;border-radius:22px;background:#231f35;color:#faf8ff;padding:24px;box-shadow:0 20px 70px #0008}
+#support-dialog::backdrop{background:#100b20bb}
+#support-dialog p{font-size:14px;color:#c6bcd6}
+#support-dialog .blik-number{font-size:30px;font-weight:700;letter-spacing:2px;color:#d7ff72;text-align:center;user-select:all}
+.dialog-close{justify-content:flex-end;margin:-12px -12px 0 0}
+.dialog-close button{background:transparent;border:0;font-size:28px;min-width:44px}
+#copy-status{min-height:22px;margin-bottom:0}
+
+    .support-button { cursor: pointer; min-height: 44px; margin-top: 18px; font: inherit; font-size: 13px; }
+    #support-dialog button { cursor: pointer; color: inherit; }
+    #support-dialog .primary { width: 100%; min-height: 48px; border: 0; border-radius: 12px; padding: 12px; background: #d7ff72; color: #171426; font-weight: 700; }
+    .dialog-close { display: flex; }
+    #support-dialog button:focus-visible, .support-button:focus-visible { outline: 3px solid #d7ff72; outline-offset: 4px; }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="symbol" src="yupiii_games_small.png" alt="Yupiii! Games" width="466" height="504">
+    <p class="eyebrow">DOBRA EKIPA. DOBRA ZABAWA.</p>
+    <h1>Wybierz grę.<br><span>Rozkręć imprezę.</span></h1>
+    <p>Zbierz znajomych i zaczynajcie!</p>
+    <section class="games" aria-label="Dostępne gry">
+      <!-- Kolejne gry: skopiuj cały game-row z kafelkiem linku i kafelkiem opisu. -->
+      <div class="game-row">
+        <a class="game game-tile" href="weaselWords/index.php">
+          <span class="icon" aria-hidden="true">👀</span>
+          <span class="name">Kto kręci?</span>
+          <span class="game-tagline">Tajne hasło. Jeden oszust.</span>
+          <span class="game-count" id="games-played" hidden></span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+        <details class="game-info">
+          <summary class="game-tile">
+            <span class="info-title">Jak grać w „Kto kręci?” 👀</span>
+            <span class="info-description">Mnóstwo podejrzeń i gra w blef dla 3–20 osób. Wystarczy jeden telefon i ekipa, która potrafi zachować pokerową twarz!</span>
+          </summary>
+            <ol>
+              <li>Wybierzcie kategorie, dodajcie graczy i kliknijcie „Nowa gra”.</li>
+              <li>Podawajcie sobie telefon. Każdy odkrywa swoją kartę, zapamiętuje ją i zakrywa przed przekazaniem telefonu dalej. Wszyscy poznają to samo hasło — poza oszustem, który dostaje tylko podpowiedź.</li>
+              <li>Kliknijcie START i kolejno podawajcie skojarzenia, nie zdradzając hasła. Oszust musi improwizować!</li>
+              <li>Gdy będziecie gotowi, zatrzymajcie czas i wspólnie wskażcie podejrzanego. Wygrywacie, jeśli wykryjecie oszusta. Jeśli Was zmyli — wygrywa on.</li>
+            </ol>
+            <p>Jeszcze jedna runda? „Nowa gra” losuje nowe hasło, a „Powrót do pokoju” pozwala zmienić kategorie, zachowując graczy.</p>
+        </details>
+      </div>
+    </section>
+    <button class="support-button" type="button" data-support>Dobra zabawa? Postaw autorowi kawę ☕</button>
+    <footer>MAŁA GRA. WIELKIE EMOCJE.</footer>
+  </main>
+  <dialog id="support-dialog" aria-labelledby="support-title">
+    <form method="dialog" class="dialog-close"><button aria-label="Zamknij">×</button></form>
+    <h2 id="support-title">Postaw autorowi kawę ☕</h2>
+    <p>Podoba Ci się gra? Możesz wesprzeć autora dowolną kwotą. Dzięki za każdą kawę! 💜</p>
+    <p>W aplikacji swojego banku wybierz <strong>przelew na telefon BLIK</strong> i wpisz numer:</p>
+    <p class="blik-number">692 793 726</p>
+    <button class="primary" id="copy-blik" type="button">Kopiuj numer <span aria-hidden="true">⧉</span></button>
+    <p id="copy-status" role="status" aria-live="polite"></p>
+  </dialog>
+  <script>
+async function refreshGameCount() {
+  const counter = document.getElementById('games-played');
+  try {
+    const gameUrl = document.querySelector('a.game').href;
+    const response = await fetch(new URL('stats.php', gameUrl), { cache: 'no-store' });
+    if (!response.ok) throw new Error('Counter unavailable');
+    const data = await response.json();
+    if (!Number.isSafeInteger(data.gamesPlayed) || data.gamesPlayed < 0) throw new Error('Invalid counter');
+    counter.textContent = `Rozegrane gry: ${new Intl.NumberFormat('pl-PL').format(data.gamesPlayed)}`;
+    counter.hidden = false;
+  } catch {
+    counter.hidden = true;
+  }
+}
+window.addEventListener('pageshow', refreshGameCount);
+document.querySelectorAll('[data-support]').forEach(button => {
+  button.onclick = () => { document.getElementById('copy-status').textContent = ''; document.getElementById('support-dialog').showModal(); };
+});
+document.getElementById('copy-blik').onclick = async () => {
+  try {
+    await navigator.clipboard.writeText('692793726');
+    document.getElementById('copy-status').textContent = 'Numer skopiowany! Otwórz aplikację banku, aby wykonać przelew.';
+  } catch {
+    document.getElementById('copy-status').textContent = 'Nie udało się skopiować. Przepisz numer 692 793 726 w aplikacji banku.';
+  }
+};
+  </script>
+</body>
+</html>
